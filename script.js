@@ -1,66 +1,80 @@
-const getUserChoice = userInput => {
-  userInput = userInput.toLowerCase();
-  if (userInput === "rock" || userInput === "paper" || userInput === "scissors" || userInput === "bomb") {
-    return userInput;
-  } else {
-    return "error! Please choose Rock, Paper, Scissors"; 
-  }
+let userScore = 0;
+let computerScore = 0;
+const userScore_span = document.getElementById("user-score");
+const computerScore_span = document.getElementById("computer-score");
+const scoreBoard = document.querySelector(".score-board");
+const result = document.querySelector(".result > p");
+const rock = document.getElementById("rock");
+const paper = document.getElementById("paper");
+const scissors = document.getElementById("scissors");
+
+function getComputerChoice() {
+    const choices = ['rock', 'paper', 'scissors'];
+    const randomNumber = Math.floor(Math.random() * 3);
+    return choices[randomNumber];
 }
 
-const getComputerChoice = () => {
-  const randomNumber = Math.floor(Math.random() * 3); 
-  switch (randomNumber) {
-    case 0: 
-    return 'rock';
-    case 1:
-    return 'paper';
-    case 2: 
-    return 'scissors'
+function convertToCapital(letter) {
+    if (letter === "rock") return "Rock";
+    if (letter === "paper") return "Paper";
+    return "Scissors";
+}
+
+function win(userChoice, computerChoice) {
+    userScore++;
+    userScore_span.innerHTML = userScore;
+    computerScore_span.innerHTML = computerScore;
+    result.innerHTML = `${convertToCapital(userChoice)}   beats   ${convertToCapital(computerChoice)}  . YOU WIN!!`
+    document.getElementById(userChoice).classList.add('green-glow');
+    setTimeout(function() {document.getElementById(userChoice).classList.remove('green-glow')}, 1000);
+}
+
+function lose(userChoice, computerChoice) {
+    computerScore++;
+    userScore_span.innerHTML = userScore;
+    computerScore_span.innerHTML = computerScore;
+    result.innerHTML = `${convertToCapital(userChoice)}   loses to   ${convertToCapital(computerChoice)}  . YOU LOST!!`
+}
+
+function draw(userChoice, computerChoice) {
+    result.innerHTML = `${convertToCapital(userChoice)}   equals   ${convertToCapital(computerChoice)}  . ITS A DRAW!!`
+}
+
+
+function game(userChoice) {
+    const computerChoice = getComputerChoice();
+    switch(userChoice + computerChoice) {
+        case "rockscissors":
+        case "paperrock":
+        case "scissorspaper":
+            win(userChoice, computerChoice);
+            break;
+        case "scissorsrock":
+        case "rockpaper":
+        case "paperscissors":
+            lose(userChoice, computerChoice);
+            break;
+        case "rockrock":
+        case "scissorsscissors":
+        case "paperpaper":
+            draw(userChoice, computerChoice);
+            break;
     }
-};
+}
 
-const determineWinner = (userChoice, computerChoice) => {
-   if (userChoice === computerChoice) {
-    return 'This game is a tie!'
-   }
-   if (userChoice === 'rock') {
-    if(computerChoice === 'paper') {
-      return 'Sorry, computer won!';
-    }else {
-      return 'Congratulations, you won!';
-    }
-   }
-    
-    if (userChoice === 'paper') {
-      if (computerChoice === 'scissors') {
-        return 'Sorry, computer won!';
-      } else {
-        return 'Congratulations, you won!';
-      }
-    }
+function main(){
+    rock.addEventListener('click', function() {
+        game('rock');
+    })
 
-    if (userChoice === 'scissors') {
-      if(computerChoice === 'rock') {
-        return 'Sorry, computer won!';
-      }else {
-        return 'Congratulations, you won!';
-      }
-    }
+    paper.addEventListener('click', function() {
+        game('paper');
+    })
 
-    if (userChoice === "bomb") {
-      return 'Congratulations, you won!';
-    }
-};
+    scissors.addEventListener('click', function() {
+        game('scissors');
+    })
+}
 
-const playGame = () => {
- const userChoice = getUserChoice('bomb');
- const computerChoice = getComputerChoice();
- console.log(`You chose: ${userChoice}`); 
- console.log(`The computer chose: ${computerChoice}`);
-
- console.log(determineWinner(userChoice, computerChoice));
-};
-
-playGame()
-
-
+main();
+getComputerChoice();
