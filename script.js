@@ -21,23 +21,30 @@ function convertToCapital(letter) {
 }
 
 function win(userChoice, computerChoice) {
+    const userChoice_div = document.getElementById(userChoice);
     userScore++;
     userScore_span.innerHTML = userScore;
     computerScore_span.innerHTML = computerScore;
     result.innerHTML = `${convertToCapital(userChoice)}   beats   ${convertToCapital(computerChoice)}  . YOU WIN!!`
-    document.getElementById(userChoice).classList.add('green-glow');
-    setTimeout(function() {document.getElementById(userChoice).classList.remove('green-glow')}, 1000);
+    userChoice_div.classList.add('green-glow');
+    setTimeout(() => userChoice_div.classList.remove('green-glow'), 1000);
 }
 
 function lose(userChoice, computerChoice) {
+    const userChoice_div = document.getElementById(userChoice);
     computerScore++;
     userScore_span.innerHTML = userScore;
     computerScore_span.innerHTML = computerScore;
     result.innerHTML = `${convertToCapital(userChoice)}   loses to   ${convertToCapital(computerChoice)}  . YOU LOST!!`
+    userChoice_div.classList.add('red-glow');
+    setTimeout(() => userChoice_div.classList.remove('red-glow'), 1000);
 }
 
 function draw(userChoice, computerChoice) {
+    const userChoice_div = document.getElementById(userChoice);
     result.innerHTML = `${convertToCapital(userChoice)}   equals   ${convertToCapital(computerChoice)}  . ITS A DRAW!!`
+    userChoice_div.classList.add('grey-glow');
+    setTimeout(() => userChoice_div.classList.remove('grey-glow'), 1000);
 }
 
 
